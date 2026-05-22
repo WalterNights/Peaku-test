@@ -40,18 +40,31 @@ Detalle completo en [`docs/01-arquitectura.md`](./docs/01-arquitectura.md).
 
 ### Pre-requisitos
 
-- Node.js ≥ 22.22 LTS
-- pnpm ≥ 11.1 (`corepack enable && corepack prepare pnpm@11.1.3 --activate`)
-- Docker Desktop (para MongoDB)
+- **Node.js ≥ 22.22 LTS** (`node --version`)
+- **pnpm ≥ 11.1** (instalación: `corepack enable && corepack prepare pnpm@11.1.3 --activate`)
+- **Docker Desktop** corriendo (lo usa `pnpm dev` para levantar los Mongos en containers — los servicios NestJS y el frontend Angular corren nativos en tu host)
 
-### Setup (una sola vez)
+### Setup (una sola vez, ~3-5 min)
 
 ```bash
-git clone <repo>
-cd PeaKu-prueba
-cp .env.example .env       # editar con secrets reales
+# 1. Clonar
+git clone https://github.com/WalterNights/Peaku-test.git
+cd Peaku-test
+
+# 2. Crear .env desde el template
+cp .env.example .env
+
+# 3. Generar dos JWT secrets fuertes y reemplazar en .env
+#    (línea JWT_ACCESS_SECRET y JWT_REFRESH_SECRET — deben ser DIFERENTES entre sí)
+node -e "console.log(require('crypto').randomBytes(48).toString('base64'))"
+node -e "console.log(require('crypto').randomBytes(48).toString('base64'))"
+#    Copiar cada output y pegarlos en .env reemplazando los CHANGE_ME_...
+
+# 4. Instalar dependencias (puede tardar 2-3 min la primera vez)
 pnpm install
 ```
+
+**Nota sobre el `.env`**: las passwords de Mongo del `.env.example` (`changeme_auth_strong_password`, etc.) funcionan en local sin tocarlas. Lo único **obligatorio** de cambiar son los dos `JWT_*_SECRET` — el backend valida al boot que sean ≥ 32 chars y aborta si están en `CHANGE_ME_...`.
 
 ### Levantar TODO el stack (1 comando)
 
@@ -59,18 +72,28 @@ pnpm install
 pnpm dev
 ```
 
-Esto arranca **5 servicios en paralelo** con concurrently:
+Esto arranca **5 procesos en paralelo** (los logs de cada uno aparecen prefijados por color en la misma terminal):
 
-| Servicio | Puerto | Health/Docs |
-|---|---|---|
-| Mongo auth-db | 27017 | container |
-| Mongo products-db | 27018 | container |
-| Auth Service | 3001 | http://localhost:3001/api/docs |
-| Products Service | 3002 | http://localhost:3002/api/docs |
-| **API Gateway** (público) | **4050** | http://localhost:4050/api/docs |
-| **Frontend Angular** | **4200** | http://localhost:4200 |
+| Proceso | Puerto | URL | Logs esperados |
+|---|---|---|---|
+| `MONGO` (containers Docker) | 27017, 27018 | — | "Waiting for connections" |
+| `AUTH` (auth-service) | 3001 | http://localhost:3001/api/docs | `[Nest] Started in XXms` |
+| `PROD` (products-service) | 3002 | http://localhost:3002/api/docs | `[Nest] Started in XXms` |
+| `GW` (api-gateway, **público**) | **4050** | http://localhost:4050/api/docs | `[Nest] Started in XXms` |
+| `FRONT` (Angular dev server) | **4200** | http://localhost:4200 | `Local: http://127.0.0.1:4200/` |
+
+**Listo cuando ves los 5 mensajes** (toma ~30-60s la primera vez). Abrí http://localhost:4200 en el browser.
 
 `Ctrl+C` baja todo limpio (mata procesos + containers vía `concurrently -k` + `pnpm kill`).
+
+### Errores comunes al arrancar
+
+| Síntoma | Causa | Solución |
+|---|---|---|
+| `Error: connect ECONNREFUSED 127.0.0.1:27017` | Docker no está corriendo | Abrí Docker Desktop y reintentá |
+| `JWT_ACCESS_SECRET must be at least 32 characters` | No reemplazaste los `CHANGE_ME_*` del `.env` | Generá secrets con `node -e "..."` (ver Setup) |
+| `EADDRINUSE: address already in use :::4050` | Otro proceso ocupa los puertos | `pnpm kill` mata los del proyecto. Si es otro proyecto, ver Troubleshooting más abajo |
+| `pnpm dev` queda colgado en "Building peaku" | Primera compilación de TS, normal | Esperá ~30s adicionales |
 
 ### Cargar datos demo (una sola vez)
 
