@@ -1,0 +1,1011 @@
+{
+  "info": {
+    "_postman_id": "7e3b1d4a-2c5f-4b9e-a1d8-3e4f5a6b7c8d",
+    "name": "PeaKu API — End-to-End Tests",
+    "description": "Colección completa con tests automatizados para el backend de PeaKu (gateway + auth + products). Cubre happy paths, errores esperados (4xx/5xx) y autorización por rol.\n\n## Cómo correr\n\n1. Levantar el stack: `pnpm docker:up`\n2. Cargar datos demo: `pnpm seed`\n3. Importar este archivo + `peaku.postman_environment.json` en Postman.\n4. Seleccionar el environment 'PeaKu — Local'.\n5. Run Collection (sequencial) o Newman desde CLI.\n\nLos tests guardan tokens/IDs en variables del environment automáticamente, así que las requests posteriores los reutilizan sin intervención manual.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "0. Health",
+      "item": [
+        {
+          "name": "GET /health (gateway)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/health",
+              "host": ["{{baseUrl}}"],
+              "path": ["health"]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status is 200', () => pm.response.to.have.status(200));",
+                  "const body = pm.response.json();",
+                  "pm.test('Service is api-gateway', () => pm.expect(body.service).to.eql('api-gateway'));",
+                  "pm.test('Status field is ok', () => pm.expect(body.status).to.eql('ok'));",
+                  "pm.test('Has ISO timestamp', () => pm.expect(body.timestamp).to.match(/^\\d{4}-\\d{2}-\\d{2}T/));"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "1. Auth — Happy Path",
+      "item": [
+        {
+          "name": "POST /auth/register (test user)",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"{{testUserEmail}}\",\n  \"password\": \"{{testUserPassword}}\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/auth/register",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "auth", "register"]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "// 201 if first time, 409 if rerun. Both are acceptable.",
+                  "pm.test('Status is 201 or 409 (idempotent rerun)', () => {",
+                  "  pm.expect(pm.response.code).to.be.oneOf([201, 409]);",
+                  "});",
+                  "if (pm.response.code === 201) {",
+                  "  const body = pm.response.json();",
+                  "  pm.test('Response has id and email', () => {",
+                  "    pm.expect(body.id).to.be.a('string');",
+                  "    pm.expect(body.email).to.eql(pm.environment.get('testUserEmail'));",
+                  "  });",
+                  "  pm.test('passwordHash NOT in response', () => {",
+                  "    pm.expect(body).to.not.have.property('passwordHash');",
+                  "  });",
+                  "}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "POST /auth/login (admin)",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"{{adminEmail}}\",\n  \"password\": \"{{adminPassword}}\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/auth/login",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "auth", "login"]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status is 200', () => pm.response.to.have.status(200));",
+                  "const body = pm.response.json();",
+                  "pm.test('Has accessToken and refreshToken', () => {",
+                  "  pm.expect(body.accessToken).to.be.a('string').and.match(/^eyJ/);",
+                  "  pm.expect(body.refreshToken).to.be.a('string').and.match(/^eyJ/);",
+                  "});",
+                  "pm.environment.set('accessToken', body.accessToken);",
+                  "pm.environment.set('refreshToken', body.refreshToken);",
+                  "// Decode JWT to verify role=admin",
+                  "const payload = JSON.parse(Buffer.from(body.accessToken.split('.')[1], 'base64').toString());",
+                  "pm.test('JWT role is admin', () => pm.expect(payload.role).to.eql('admin'));",
+                  "pm.test('JWT has iss/aud', () => {",
+                  "  pm.expect(payload.iss).to.eql('peaku-auth');",
+                  "  pm.expect(payload.aud).to.eql('peaku-api');",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "POST /auth/login (test user)",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"{{testUserEmail}}\",\n  \"password\": \"{{testUserPassword}}\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/auth/login",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "auth", "login"]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status is 200', () => pm.response.to.have.status(200));",
+                  "const body = pm.response.json();",
+                  "pm.environment.set('userAccessToken', body.accessToken);",
+                  "const payload = JSON.parse(Buffer.from(body.accessToken.split('.')[1], 'base64').toString());",
+                  "pm.test('JWT role is user (NOT admin)', () => pm.expect(payload.role).to.eql('user'));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "GET /auth/me",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{accessToken}}" }],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/auth/me",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "auth", "me"]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status is 200', () => pm.response.to.have.status(200));",
+                  "const body = pm.response.json();",
+                  "pm.test('Email matches admin', () => pm.expect(body.email).to.eql(pm.environment.get('adminEmail')));",
+                  "pm.test('Role is admin', () => pm.expect(body.role).to.eql('admin'));",
+                  "pm.test('No password fields exposed', () => {",
+                  "  pm.expect(body).to.not.have.property('passwordHash');",
+                  "  pm.expect(body).to.not.have.property('refreshTokenHash');",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "POST /auth/refresh (rotation)",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"refreshToken\": \"{{refreshToken}}\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/auth/refresh",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "auth", "refresh"]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status is 200', () => pm.response.to.have.status(200));",
+                  "const body = pm.response.json();",
+                  "const oldAccess = pm.environment.get('accessToken');",
+                  "const oldRefresh = pm.environment.get('refreshToken');",
+                  "pm.test('New tokens are different (rotation)', () => {",
+                  "  pm.expect(body.accessToken).to.not.eql(oldAccess);",
+                  "  pm.expect(body.refreshToken).to.not.eql(oldRefresh);",
+                  "});",
+                  "pm.environment.set('accessToken', body.accessToken);",
+                  "pm.environment.set('refreshToken', body.refreshToken);"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "2. Auth — Sad Path",
+      "item": [
+        {
+          "name": "POST /auth/register (email duplicado) → 409",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"{{adminEmail}}\",\n  \"password\": \"AnyPass1234!\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/auth/register",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "auth", "register"]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status is 409 Conflict', () => pm.response.to.have.status(409));",
+                  "const body = pm.response.json();",
+                  "pm.test('Error name is EmailAlreadyRegisteredError', () => {",
+                  "  pm.expect(body.error).to.eql('EmailAlreadyRegisteredError');",
+                  "});",
+                  "pm.test('Has correlationId', () => pm.expect(body.correlationId).to.be.a('string'));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "POST /auth/register (email inválido) → 400",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"not-an-email\",\n  \"password\": \"Pass1234!\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/auth/register",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "auth", "register"]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status is 400 Bad Request', () => pm.response.to.have.status(400));",
+                  "const body = pm.response.json();",
+                  "pm.test('Message mentions email validation', () => {",
+                  "  const msg = JSON.stringify(body).toLowerCase();",
+                  "  pm.expect(msg).to.include('email');",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "POST /auth/register (password muy corto) → 400",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"short@peaku.test\",\n  \"password\": \"123\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/auth/register",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "auth", "register"]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status is 400 Bad Request', () => pm.response.to.have.status(400));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "POST /auth/login (credenciales inválidas) → 401",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"{{adminEmail}}\",\n  \"password\": \"WrongPass9999!\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/auth/login",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "auth", "login"]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status is 401 Unauthorized', () => pm.response.to.have.status(401));",
+                  "const body = pm.response.json();",
+                  "pm.test('Error name is InvalidCredentialsError', () => {",
+                  "  pm.expect(body.error).to.eql('InvalidCredentialsError');",
+                  "});",
+                  "pm.test('Generic message — does NOT reveal whether email exists', () => {",
+                  "  pm.expect(body.message.toLowerCase()).to.not.include('user');",
+                  "  pm.expect(body.message.toLowerCase()).to.not.include('email');",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "POST /auth/login (email inexistente) → 401 (mismo error)",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"ghost@nowhere.test\",\n  \"password\": \"Anything1234!\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/auth/login",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "auth", "login"]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status is 401 (mismo error que credenciales mal — no leak de existencia)', () => {",
+                  "  pm.response.to.have.status(401);",
+                  "});",
+                  "const body = pm.response.json();",
+                  "pm.test('Error name idéntico a credentials inválidas', () => {",
+                  "  pm.expect(body.error).to.eql('InvalidCredentialsError');",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "GET /auth/me (sin token) → 401",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/auth/me",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "auth", "me"]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status is 401', () => pm.response.to.have.status(401));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "GET /auth/me (token inválido) → 401",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer not.a.valid.jwt" }],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/auth/me",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "auth", "me"]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status is 401', () => pm.response.to.have.status(401));"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "3. Products — Public Reads",
+      "item": [
+        {
+          "name": "GET /products (lista paginada)",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{accessToken}}" }],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/products?page=1&limit=20",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "products"],
+              "query": [
+                { "key": "page", "value": "1" },
+                { "key": "limit", "value": "20" }
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status is 200', () => pm.response.to.have.status(200));",
+                  "const body = pm.response.json();",
+                  "pm.test('Has paginated shape', () => {",
+                  "  pm.expect(body.items).to.be.an('array');",
+                  "  pm.expect(body.total).to.be.a('number');",
+                  "  pm.expect(body.page).to.eql(1);",
+                  "  pm.expect(body.limit).to.eql(20);",
+                  "  pm.expect(body.totalPages).to.be.a('number');",
+                  "});",
+                  "pm.test('Seed loaded ≥ 10 products', () => pm.expect(body.total).to.be.at.least(10));",
+                  "if (body.items.length > 0) {",
+                  "  const p = body.items[0];",
+                  "  pm.test('Product has expected shape', () => {",
+                  "    pm.expect(p.id).to.be.a('string');",
+                  "    pm.expect(p.sku).to.be.a('string');",
+                  "    pm.expect(p.name).to.be.a('string');",
+                  "    pm.expect(p.price).to.be.a('number');",
+                  "    pm.expect(p.stock).to.be.a('number');",
+                  "    pm.expect(p.category).to.be.oneOf(['cereales', 'oleaginosas', 'forrajeras', 'otros']);",
+                  "  });",
+                  "  pm.environment.set('createdProductId', p.id);",
+                  "}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "GET /products?category=cereales",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{accessToken}}" }],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/products?category=cereales&limit=50",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "products"],
+              "query": [
+                { "key": "category", "value": "cereales" },
+                { "key": "limit", "value": "50" }
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status is 200', () => pm.response.to.have.status(200));",
+                  "const body = pm.response.json();",
+                  "pm.test('All items are cereales', () => {",
+                  "  body.items.forEach(p => pm.expect(p.category).to.eql('cereales'));",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "GET /products?search=soja",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{accessToken}}" }],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/products?search=soja",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "products"],
+              "query": [{ "key": "search", "value": "soja" }]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status is 200', () => pm.response.to.have.status(200));",
+                  "const body = pm.response.json();",
+                  "pm.test('At least one match for \"soja\"', () => pm.expect(body.total).to.be.at.least(1));",
+                  "pm.test('All matches contain \"soja\" in name or sku (case-insensitive)', () => {",
+                  "  body.items.forEach(p => {",
+                  "    const haystack = (p.name + ' ' + p.sku).toLowerCase();",
+                  "    pm.expect(haystack).to.include('soja');",
+                  "  });",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "GET /products/:id (existente)",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{accessToken}}" }],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/products/{{createdProductId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "products", "{{createdProductId}}"]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status is 200', () => pm.response.to.have.status(200));",
+                  "const body = pm.response.json();",
+                  "pm.test('ID matches', () => pm.expect(body.id).to.eql(pm.environment.get('createdProductId')));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "GET /products/:id (inexistente) → 404",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{accessToken}}" }],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/products/000000000000000000000000",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "products", "000000000000000000000000"]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status is 404 Not Found', () => pm.response.to.have.status(404));",
+                  "const body = pm.response.json();",
+                  "pm.test('Error name is ProductNotFoundError', () => {",
+                  "  pm.expect(body.error).to.eql('ProductNotFoundError');",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "GET /products (sin token) → 401",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/products",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "products"]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status is 401 (gateway pre-valida JWT)', () => pm.response.to.have.status(401));"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "4. Products — Admin Mutations",
+      "item": [
+        {
+          "name": "POST /products (admin) → 201",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{accessToken}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"sku\": \"E2E-TEST-{{$timestamp}}\",\n  \"name\": \"Producto E2E Test\",\n  \"description\": \"Creado por la collection Postman\",\n  \"price\": 99.99,\n  \"stock\": 10,\n  \"category\": \"otros\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/products",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "products"]
+            }
+          },
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "// Generate a unique SKU for this run",
+                  "pm.environment.set('newProductSku', 'E2E-TEST-' + Date.now());"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status is 201 Created', () => pm.response.to.have.status(201));",
+                  "const body = pm.response.json();",
+                  "pm.test('Response has product fields', () => {",
+                  "  pm.expect(body.id).to.be.a('string');",
+                  "  pm.expect(body.sku).to.match(/^E2E-TEST-/);",
+                  "  pm.expect(body.name).to.eql('Producto E2E Test');",
+                  "  pm.expect(body.price).to.eql(99.99);",
+                  "  pm.expect(body.stock).to.eql(10);",
+                  "  pm.expect(body.isActive).to.be.true;",
+                  "});",
+                  "pm.environment.set('createdProductId', body.id);",
+                  "pm.environment.set('createdProductSku', body.sku);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "POST /products (SKU duplicado) → 409",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{accessToken}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"sku\": \"SOJA-2026-001\",\n  \"name\": \"Soja dup\",\n  \"price\": 100,\n  \"stock\": 1,\n  \"category\": \"oleaginosas\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/products",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "products"]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status is 409 Conflict', () => pm.response.to.have.status(409));",
+                  "const body = pm.response.json();",
+                  "pm.test('Error name is DuplicateSkuError', () => {",
+                  "  pm.expect(body.error).to.eql('DuplicateSkuError');",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "POST /products (precio inválido) → 400",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{accessToken}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"sku\": \"NEG-PRICE\",\n  \"name\": \"Invalido\",\n  \"price\": -10,\n  \"stock\": 1,\n  \"category\": \"otros\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/products",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "products"]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status is 400 Bad Request', () => pm.response.to.have.status(400));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "PATCH /products/:id (admin actualiza)",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{accessToken}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"price\": 149.50,\n  \"stock\": 25\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/products/{{createdProductId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "products", "{{createdProductId}}"]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status is 200', () => pm.response.to.have.status(200));",
+                  "const body = pm.response.json();",
+                  "pm.test('Price actualizado a 149.50', () => pm.expect(body.price).to.eql(149.5));",
+                  "pm.test('Stock actualizado a 25', () => pm.expect(body.stock).to.eql(25));",
+                  "pm.test('SKU inmutable (no cambió)', () => pm.expect(body.sku).to.eql(pm.environment.get('createdProductSku')));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "PATCH /products/:id (intentar cambiar SKU — debe IGNORARSE)",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{accessToken}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"sku\": \"NEW-SKU-HACK\",\n  \"name\": \"OK update\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/products/{{createdProductId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "products", "{{createdProductId}}"]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status is 400 (forbidNonWhitelisted rechaza el campo sku)', () => {",
+                  "  pm.response.to.have.status(400);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "DELETE /products/:id (admin soft-delete) → 204",
+          "request": {
+            "method": "DELETE",
+            "header": [{ "key": "Authorization", "value": "Bearer {{accessToken}}" }],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/products/{{createdProductId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "products", "{{createdProductId}}"]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status is 204 No Content', () => pm.response.to.have.status(204));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "GET /products/:id (soft-deleted, no debe aparecer) → 404",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{accessToken}}" }],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/products/{{createdProductId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "products", "{{createdProductId}}"]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status is 404 (filtra soft-deleted por default)', () => {",
+                  "  pm.response.to.have.status(404);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "5. Authorization Failures (admin only)",
+      "item": [
+        {
+          "name": "POST /products (user normal) → 403",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{userAccessToken}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"sku\": \"USR-ATTEMPT-001\",\n  \"name\": \"User attempt\",\n  \"price\": 50,\n  \"stock\": 5,\n  \"category\": \"otros\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/products",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "products"]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status is 403 (user no tiene rol admin)', () => {",
+                  "  pm.response.to.have.status(403);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "DELETE /products/:id (user normal) → 403",
+          "request": {
+            "method": "DELETE",
+            "header": [{ "key": "Authorization", "value": "Bearer {{userAccessToken}}" }],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/products/000000000000000000000000",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "products", "000000000000000000000000"]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status is 403', () => pm.response.to.have.status(403));"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "6. Logout & Token Revocation",
+      "item": [
+        {
+          "name": "POST /auth/logout (revoca refresh)",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Authorization", "value": "Bearer {{accessToken}}" }],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/auth/logout",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "auth", "logout"]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status is 204', () => pm.response.to.have.status(204));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "POST /auth/refresh (después de logout) → 401",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"refreshToken\": \"{{refreshToken}}\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/auth/refresh",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "auth", "refresh"]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status is 401 (refresh fue revocado en logout)', () => {",
+                  "  pm.response.to.have.status(401);",
+                  "});",
+                  "const body = pm.response.json();",
+                  "pm.test('Error name is InvalidRefreshTokenError', () => {",
+                  "  pm.expect(body.error).to.eql('InvalidRefreshTokenError');",
+                  "});"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          "// Global pre-request — runs before each request in the collection",
+          "// Add a correlation-id so we can trace each request end-to-end",
+          "if (!pm.request.headers.has('x-correlation-id')) {",
+          "  pm.request.headers.add({",
+          "    key: 'x-correlation-id',",
+          "    value: 'postman-' + Date.now() + '-' + Math.random().toString(36).slice(2, 8)",
+          "  });",
+          "}"
+        ]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          "// Global post-request — runs after each request",
+          "pm.test('Response includes correlation-id header', () => {",
+          "  pm.expect(pm.response.headers.get('x-correlation-id')).to.not.be.null;",
+          "});"
+        ]
+      }
+    }
+  ]
+}

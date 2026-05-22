@@ -1,0 +1,71 @@
+packages:
+  - 'apps/*'
+  - 'libs/*'
+
+# =============================================================================
+# Hardening de supply-chain (ver docs/04-seguridad.md §13)
+# pnpm 11+ lee estas claves desde aquí (en versiones previas estaban en
+# package.json bajo "pnpm.*", pero ese soporte fue removido).
+# =============================================================================
+
+# --- Build scripts: lista blanca de paquetes que pueden ejecutar postinstall ---
+# pnpm 11+ usa el formato map con true/false (reemplaza al array
+# onlyBuiltDependencies de versiones previas). Cualquier paquete que intente
+# scripts y NO esté listado es bloqueado (defensa contra Nx s1ngularity /
+# Shai-Hulud / etc).
+allowBuilds:
+  '@nestjs/core': true
+  '@swc/core': true
+  bcrypt: true
+  esbuild: true
+  mongodb-memory-server: true
+  mongodb-memory-server-core: true
+  # Bloqueado: @scarf/scarf manda telemetría anónima al equipo de NestJS.
+  # No es malicioso pero por privacidad lo dejamos fuera. Para activarlo:
+  # '@scarf/scarf': true
+  '@scarf/scarf': false
+  # Angular CLI build chain — necesarios para watch performante + persistent cache.
+  # Maintainers oficiales (oxc-project / lmdb-js core / msgpackr core), binarios
+  # nativos. Sin estos build scripts ng serve cae a polling y la cache a JS-only.
+  '@parcel/watcher': true
+  lmdb: true
+  msgpackr-extract: true
+
+# --- Audit config ---
+auditConfig:
+  ignoreCves: []
+
+# --- Bloquear deps transitivas que vengan de URLs git/tarball externos ---
+blockExoticSubdeps: true
+
+# --- Cooldown: ignora paquetes publicados hace < 24 h ---
+# Habría mitigado el ataque chalk/debug de Sep-2025 (revertido en ~2h),
+# Shai-Hulud 2.0, y la mayor parte de los waves de supply-chain attacks.
+minimumReleaseAge: 1440
+
+# --- Policy de trust DESHABILITADA por pragmatismo ---
+# trustPolicy: no-downgrade era demasiado estricto: bloquea cualquier paquete
+# que perdió provenance attestation respecto a una versión previa. En la
+# práctica, muchísimos paquetes JS legítimos NO tienen attestation (feature
+# nuevo, ~2023). Ejemplos que tropiezan: eslint-config-prettier@9.1.2,
+# ts-jest@29.4.10. La defensa real contra ataques activos es
+# minimumReleaseAge. Ver docs/04-seguridad.md §13.5.
+# trustPolicy: no-downgrade
+
+# --- Versiones forzadas en transitivas (overrides) ---
+# Forzamos versiones seguras para deps que aparecen como transitivas
+# vulnerables (axios CVE-2025-62718, mongoose CVE-2025-23061, etc.).
+overrides:
+  axios: ^1.16.0
+  cookie: ^0.7.2
+  cross-spawn: ^7.0.6
+  debug: ^4.4.0
+  file-type: ^21.3.2 # GHSA-5v7r/j47w infinite loop + ZIP bomb DoS
+  helmet: ^8.1.0
+  js-yaml: ^4.1.1 # GHSA-mh29-5h37-fv8m prototype pollution en merge (<<)
+  lodash: ^4.17.24 # CVE-2021-23337 code injection via _.template
+  mongoose: ^8.9.5
+  multer: ^2.1.1 # 3 CVEs DoS (via @nestjs/platform-express)
+  # CVEs detectadas en transitivas durante el primer audit (mayo 2026):
+  tar: ^7.5.11 # 6 CVEs: path traversal, file overwrite, race condition
+  uuid: ^11.1.0

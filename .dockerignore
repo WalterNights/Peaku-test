@@ -1,0 +1,68 @@
+# =============================================================================
+# .dockerignore raíz — controla qué se manda al Docker daemon como build context.
+# Sin esto, cada `docker build` copia node_modules (1GB+) y tarda 20-60s extra.
+# =============================================================================
+
+# Dependencias instaladas (cada Dockerfile re-instala desde el lockfile)
+node_modules
+**/node_modules
+
+# Build outputs
+**/dist
+**/build
+**/*.tsbuildinfo
+**/.angular/cache
+
+# Coverage / test artifacts
+**/coverage
+**/.nyc_output
+**/junit.xml
+**/test-results
+**/e2e/screenshots
+**/e2e/videos
+
+# Logs
+**/logs
+**/*.log
+**/npm-debug.log*
+**/pnpm-debug.log*
+
+# Secrets / env reales (¡crítico!)
+.env
+.env.local
+.env.*.local
+**/*.pem
+**/*.key
+
+# Claude Code — settings personales con API keys
+.claude/settings.local.json
+.mcp.local.json
+
+# Git
+.git
+.gitignore
+.gitattributes
+
+# CI / docs / readme — no necesario en runtime
+.github
+**/*.md
+docs/
+LICENSE*
+Prueba_Tecnica_FullStack.pdf
+
+# Editor / OS
+.idea
+.vscode
+**/*.swp
+**/*.swo
+**/.DS_Store
+**/Thumbs.db
+**/desktop.ini
+
+# Docker compose override (dev-only)
+docker-compose.override.yml
+
+# Misc
+**/*.tgz
+**/.tmp
+**/.cache

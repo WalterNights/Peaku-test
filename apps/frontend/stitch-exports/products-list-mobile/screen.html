@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+
+<html class="light" lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport"/>
+<title>Mis productos - PeaKu</title>
+<!-- Google Fonts & Material Symbols -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=JetBrains+Mono:wght@400;500&amp;family=Manrope:wght@500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Tailwind Config from Brand Anchors -->
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-primary-container": "#9ce9ab",
+                    "tertiary": "#772c3b",
+                    "on-primary-fixed": "#00210c",
+                    "secondary-fixed": "#e4e2db",
+                    "surface-tint": "#206c3b",
+                    "on-tertiary-container": "#ffcad0",
+                    "tertiary-fixed-dim": "#ffb2bc",
+                    "secondary-container": "#e1e0d8",
+                    "on-tertiary": "#ffffff",
+                    "on-primary": "#ffffff",
+                    "background": "#FAFAF7",
+                    "surface-container": "#ebefe8",
+                    "surface-variant": "#e0e4dc",
+                    "on-secondary-fixed": "#1b1c17",
+                    "surface-container-lowest": "#ffffff",
+                    "on-tertiary-fixed": "#3f0113",
+                    "on-primary-fixed-variant": "#005226",
+                    "inverse-surface": "#2d322d",
+                    "secondary-fixed-dim": "#c8c7bf",
+                    "inverse-on-surface": "#eef2eb",
+                    "surface-container-low": "#f1f5ed",
+                    "on-error": "#ffffff",
+                    "on-secondary-fixed-variant": "#474741",
+                    "primary-container": "#1f6b3a",
+                    "error-container": "#ffdad6",
+                    "on-surface": "#181d18",
+                    "primary-fixed-dim": "#8cd79b",
+                    "tertiary-fixed": "#ffd9dd",
+                    "inverse-primary": "#8cd79b",
+                    "destructive": "#A33A2A",
+                    "outline": "#707a6f",
+                    "surface-container-high": "#e6e9e2",
+                    "card": "#FFFFFF",
+                    "surface": "#f7faf3",
+                    "on-background": "#181d18",
+                    "on-surface-variant": "#404940",
+                    "outline-variant": "#bfc9bd",
+                    "on-tertiary-fixed-variant": "#792d3c",
+                    "on-error-container": "#93000a",
+                    "on-secondary": "#ffffff",
+                    "accent": "#E8A33D",
+                    "muted-foreground": "#5C6358",
+                    "secondary": "#5f5f59",
+                    "surface-dim": "#d7dbd4",
+                    "error": "#ba1a1a",
+                    "on-secondary-container": "#63635d",
+                    "surface-bright": "#f7faf3",
+                    "primary-fixed": "#a7f4b6",
+                    "surface-container-highest": "#e0e4dc",
+                    "primary": "#005226",
+                    "border": "#D9D6CC",
+                    "tertiary-container": "#954352",
+                    "foreground": "#1A1F1B"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "form-column": "480px",
+                    "reading-column": "680px",
+                    "gap-default": "24px",
+                    "section-py-mobile": "48px",
+                    "container-max": "1280px",
+                    "section-py-desktop": "80px"
+            },
+            "fontFamily": {
+                    "h3": ["Manrope"],
+                    "display-md": ["Manrope"],
+                    "h2": ["Manrope"],
+                    "body-sm": ["Inter"],
+                    "label-eyebrow": ["Manrope"],
+                    "display-lg": ["Manrope"],
+                    "body": ["Inter"],
+                    "mono": ["JetBrains Mono"],
+                    "display-xl": ["Manrope"]
+            },
+            "fontSize": {
+                    "h3": ["18px", {"lineHeight": "1.4", "fontWeight": "600"}],
+                    "display-md": ["28px", {"lineHeight": "1.2", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                    "h2": ["22px", {"lineHeight": "1.3", "fontWeight": "600"}],
+                    "body-sm": ["13px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                    "label-eyebrow": ["11px", {"lineHeight": "1.4", "letterSpacing": "0.14em", "fontWeight": "600"}],
+                    "display-lg": ["40px", {"lineHeight": "1.15", "letterSpacing": "-0.015em", "fontWeight": "700"}],
+                    "body": ["15px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                    "mono": ["13px", {"fontWeight": "500"}],
+                    "display-xl": ["56px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}]
+            }
+          }
+        }
+      }
+    </script>
+<style>
+        /* Custom utilities */
+        .hide-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .hide-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+        body {
+            /* Force mobile viewport for prototype */
+            max-width: 375px;
+            margin: 0 auto;
+            background-color: #FAFAF7; /* Match body bg to app background for letterboxing effect if viewed on desktop */
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-foreground font-body min-h-screen relative shadow-[0_0_20px_rgba(0,0,0,0.05)] mx-auto overflow-x-hidden">
+<!-- Sticky Header -->
+<header class="sticky top-0 z-50 h-14 bg-background/80 backdrop-blur-[8px] border-b border-border flex items-center justify-between px-4">
+<!-- Left: Hamburger -->
+<button aria-label="Menu" class="h-9 w-9 flex items-center justify-center rounded-DEFAULT hover:bg-surface-container-highest/50 transition-colors focus:outline-none focus:ring-2 focus:ring-accent" type="button">
+<span class="material-symbols-outlined text-[24px] text-foreground">menu</span>
+</button>
+<!-- Center: Wordmark -->
+<div class="absolute left-1/2 -translate-x-1/2 flex items-center">
+<span class="font-display-md text-[18px] text-foreground font-semibold tracking-tight">PeaKu</span>
+<span class="w-[6px] h-[6px] rounded-full bg-accent ml-1 mt-1"></span>
+</div>
+<!-- Right: Avatar -->
+<button class="h-9 w-9 rounded-full bg-primary-container text-on-primary-container flex items-center justify-center font-h3 text-xs focus:outline-none focus:ring-2 focus:ring-accent ring-offset-2 ring-offset-background" type="button">
+            MR
+        </button>
+</header>
+<!-- Main Content Canvas -->
+<main class="px-4 py-6 flex flex-col gap-6">
+<!-- Header Section -->
+<section class="flex flex-col gap-2">
+<span class="font-label-eyebrow text-label-eyebrow text-muted-foreground uppercase tracking-widest">CATÁLOGO</span>
+<div class="flex flex-col gap-1">
+<h1 class="font-h2 text-[24px] text-foreground">Mis productos</h1>
+<p class="font-body-sm text-body-sm text-muted-foreground">Tu catálogo agropecuario, trazable.</p>
+</div>
+<button class="mt-2 w-full h-11 bg-primary-container text-on-primary font-body font-medium rounded-lg flex items-center justify-center gap-2 hover:bg-primary transition-colors focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2" type="button">
+<span class="material-symbols-outlined text-[20px]">add</span>
+                Nuevo producto
+            </button>
+</section>
+<!-- Filters Section -->
+<section class="flex flex-col gap-4">
+<!-- Search Input -->
+<div class="relative w-full">
+<div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+<span class="material-symbols-outlined text-[20px] text-muted-foreground">search</span>
+</div>
+<input class="w-full h-11 pl-10 pr-4 bg-surface-container-lowest border border-border rounded-lg font-body-sm text-body-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-accent focus:border-accent transition-shadow" placeholder="Buscar SKU o nombre…" type="text"/>
+</div>
+<!-- Scrollable Chips -->
+<div class="flex overflow-x-auto hide-scrollbar gap-2 pb-1">
+<button class="shrink-0 h-8 px-3 rounded-full bg-primary-container text-on-primary font-body-sm text-xs border border-transparent whitespace-nowrap focus:outline-none focus:ring-2 focus:ring-accent" type="button">Todas</button>
+<button class="shrink-0 h-8 px-3 rounded-full bg-transparent text-foreground border border-border font-body-sm text-xs whitespace-nowrap hover:bg-surface-container-lowest transition-colors focus:outline-none focus:ring-2 focus:ring-accent" type="button">Cereales</button>
+<button class="shrink-0 h-8 px-3 rounded-full bg-transparent text-foreground border border-border font-body-sm text-xs whitespace-nowrap hover:bg-surface-container-lowest transition-colors focus:outline-none focus:ring-2 focus:ring-accent" type="button">Oleaginosas</button>
+<button class="shrink-0 h-8 px-3 rounded-full bg-transparent text-foreground border border-border font-body-sm text-xs whitespace-nowrap hover:bg-surface-container-lowest transition-colors focus:outline-none focus:ring-2 focus:ring-accent" type="button">Forrajeras</button>
+<button class="shrink-0 h-8 px-3 rounded-full bg-transparent text-foreground border border-border font-body-sm text-xs whitespace-nowrap hover:bg-surface-container-lowest transition-colors focus:outline-none focus:ring-2 focus:ring-accent" type="button">Otros</button>
+</div>
+</section>
+<!-- Product List -->
+<section class="flex flex-col gap-3">
+<!-- Card 1 -->
+<article class="bg-card border border-border rounded-lg p-4 flex flex-col gap-3">
+<header class="flex justify-between items-start">
+<span class="font-mono text-[11px] text-muted-foreground tracking-tight">AGR-SOJ-001</span>
+<span class="inline-flex items-center px-2 py-0.5 rounded-[4px] bg-[#1F6B3A]/10 text-primary-container font-body-sm text-[11px] font-medium tracking-wide">Activo</span>
+</header>
+<div>
+<h3 class="font-body text-base font-medium text-foreground line-clamp-2 leading-tight">Semilla de Soja RR2 — Bolsa 40kg</h3>
+</div>
+<div class="flex items-center gap-2">
+<span class="inline-flex items-center px-2 py-1 rounded-[4px] bg-surface-container-high text-foreground font-body-sm text-[11px] font-medium">Semillas</span>
+</div>
+<div class="flex justify-between items-center mt-1">
+<span class="font-body text-[15px] font-semibold text-foreground tabular-nums">$ 48.500</span>
+<span class="font-body-sm text-[12px] text-muted-foreground tabular-nums">Stock 1.240</span>
+</div>
+<div class="flex justify-end gap-1 border-t border-border/50 pt-3 mt-1">
+<button aria-label="Edit" class="h-9 w-9 flex items-center justify-center rounded-DEFAULT text-muted-foreground hover:bg-surface-container hover:text-foreground transition-colors focus:outline-none focus:ring-2 focus:ring-accent" type="button">
+<span class="material-symbols-outlined text-[20px]">edit</span>
+</button>
+<button aria-label="Delete" class="h-9 w-9 flex items-center justify-center rounded-DEFAULT text-muted-foreground hover:bg-error-container hover:text-destructive transition-colors focus:outline-none focus:ring-2 focus:ring-accent" type="button">
+<span class="material-symbols-outlined text-[20px]">delete</span>
+</button>
+</div>
+</article>
+<!-- Card 2 -->
+<article class="bg-card border border-border rounded-lg p-4 flex flex-col gap-3">
+<header class="flex justify-between items-start">
+<span class="font-mono text-[11px] text-muted-foreground tracking-tight">AGR-MAI-002</span>
+<span class="inline-flex items-center px-2 py-0.5 rounded-[4px] bg-[#1F6B3A]/10 text-primary-container font-body-sm text-[11px] font-medium tracking-wide">Activo</span>
+</header>
+<div>
+<h3 class="font-body text-base font-medium text-foreground line-clamp-2 leading-tight">Semilla Maíz DK7210 — Bolsa 20kg</h3>
+</div>
+<div class="flex items-center gap-2">
+<span class="inline-flex items-center px-2 py-1 rounded-[4px] bg-surface-container-high text-foreground font-body-sm text-[11px] font-medium">Semillas</span>
+</div>
+<div class="flex justify-between items-center mt-1">
+<span class="font-body text-[15px] font-semibold text-foreground tabular-nums">$ 62.000</span>
+<span class="font-body-sm text-[12px] text-muted-foreground tabular-nums">Stock 580</span>
+</div>
+<div class="flex justify-end gap-1 border-t border-border/50 pt-3 mt-1">
+<button aria-label="Edit" class="h-9 w-9 flex items-center justify-center rounded-DEFAULT text-muted-foreground hover:bg-surface-container hover:text-foreground transition-colors focus:outline-none focus:ring-2 focus:ring-accent" type="button">
+<span class="material-symbols-outlined text-[20px]">edit</span>
+</button>
+<button aria-label="Delete" class="h-9 w-9 flex items-center justify-center rounded-DEFAULT text-muted-foreground hover:bg-error-container hover:text-destructive transition-colors focus:outline-none focus:ring-2 focus:ring-accent" type="button">
+<span class="material-symbols-outlined text-[20px]">delete</span>
+</button>
+</div>
+</article>
+<!-- Card 3 -->
+<article class="bg-card border border-border rounded-lg p-4 flex flex-col gap-3">
+<header class="flex justify-between items-start">
+<span class="font-mono text-[11px] text-muted-foreground tracking-tight">AGR-GLI-014</span>
+<span class="inline-flex items-center px-2 py-0.5 rounded-[4px] bg-[#A33A2A]/10 text-destructive font-body-sm text-[11px] font-medium tracking-wide">Sin stock</span>
+</header>
+<div>
+<h3 class="font-body text-base font-medium text-foreground line-clamp-2 leading-tight">Glifosato 48% — Bidón 20L</h3>
+</div>
+<div class="flex items-center gap-2">
+<span class="inline-flex items-center px-2 py-1 rounded-[4px] bg-surface-container-high text-foreground font-body-sm text-[11px] font-medium">Agroquímicos</span>
+</div>
+<div class="flex justify-between items-center mt-1">
+<span class="font-body text-[15px] font-semibold text-foreground tabular-nums">$ 28.900</span>
+<span class="font-body-sm text-[12px] text-muted-foreground tabular-nums">Stock 0</span>
+</div>
+<div class="flex justify-end gap-1 border-t border-border/50 pt-3 mt-1">
+<button aria-label="Edit" class="h-9 w-9 flex items-center justify-center rounded-DEFAULT text-muted-foreground hover:bg-surface-container hover:text-foreground transition-colors focus:outline-none focus:ring-2 focus:ring-accent" type="button">
+<span class="material-symbols-outlined text-[20px]">edit</span>
+</button>
+<button aria-label="Delete" class="h-9 w-9 flex items-center justify-center rounded-DEFAULT text-muted-foreground hover:bg-error-container hover:text-destructive transition-colors focus:outline-none focus:ring-2 focus:ring-accent" type="button">
+<span class="material-symbols-outlined text-[20px]">delete</span>
+</button>
+</div>
+</article>
+<!-- Card 4 -->
+<article class="bg-card border border-border rounded-lg p-4 flex flex-col gap-3">
+<header class="flex justify-between items-start">
+<span class="font-mono text-[11px] text-muted-foreground tracking-tight">AGR-FRT-021</span>
+<span class="inline-flex items-center px-2 py-0.5 rounded-[4px] bg-[#1F6B3A]/10 text-primary-container font-body-sm text-[11px] font-medium tracking-wide">Activo</span>
+</header>
+<div>
+<h3 class="font-body text-base font-medium text-foreground line-clamp-2 leading-tight">Fertilizante Triple 15 — 50kg</h3>
+</div>
+<div class="flex items-center gap-2">
+<span class="inline-flex items-center px-2 py-1 rounded-[4px] bg-surface-container-high text-foreground font-body-sm text-[11px] font-medium">Fertilizantes</span>
+</div>
+<div class="flex justify-between items-center mt-1">
+<span class="font-body text-[15px] font-semibold text-foreground tabular-nums">$ 19.750</span>
+<span class="font-body-sm text-[12px] text-muted-foreground tabular-nums">Stock 320</span>
+</div>
+<div class="flex justify-end gap-1 border-t border-border/50 pt-3 mt-1">
+<button aria-label="Edit" class="h-9 w-9 flex items-center justify-center rounded-DEFAULT text-muted-foreground hover:bg-surface-container hover:text-foreground transition-colors focus:outline-none focus:ring-2 focus:ring-accent" type="button">
+<span class="material-symbols-outlined text-[20px]">edit</span>
+</button>
+<button aria-label="Delete" class="h-9 w-9 flex items-center justify-center rounded-DEFAULT text-muted-foreground hover:bg-error-container hover:text-destructive transition-colors focus:outline-none focus:ring-2 focus:ring-accent" type="button">
+<span class="material-symbols-outlined text-[20px]">delete</span>
+</button>
+</div>
+</article>
+</section>
+<!-- Pagination Section -->
+<section class="flex flex-col gap-4 mt-2 pb-6 border-t border-border/50 pt-6">
+<div class="text-center font-mono text-[11px] text-muted-foreground tabular-nums">
+                Página 1 de 6 · 47 productos
+            </div>
+<div class="flex gap-3">
+<button class="flex-1 h-10 border border-border rounded-lg bg-transparent text-muted-foreground/50 font-body-sm font-medium flex items-center justify-center gap-2 cursor-not-allowed" disabled="" type="button">
+<span class="material-symbols-outlined text-[18px]">arrow_back</span>
+                    Anterior
+                </button>
+<button class="flex-1 h-10 border border-border rounded-lg bg-surface-container-lowest text-foreground font-body-sm font-medium flex items-center justify-center gap-2 hover:bg-surface-container transition-colors focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2" type="button">
+                    Siguiente
+                    <span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+</button>
+</div>
+</section>
+</main>
+<!-- Bottom Navigation Bar (Mandatory Shell for top-level destination) -->
+<!-- Assuming "Mis productos" maps to a primary navigation item like "Productos" or similar intent -->
+<nav class="fixed bottom-0 w-full max-w-[375px] bg-surface border-t border-border flex justify-around items-center h-16 pb-safe z-50 md:hidden">
+<button class="flex flex-col items-center justify-center w-full h-full text-secondary hover:text-primary transition-colors focus:outline-none focus:ring-2 focus:ring-accent">
+<span class="material-symbols-outlined text-[24px]">home</span>
+<span class="font-label-eyebrow text-[10px] mt-1 tracking-normal">Inicio</span>
+</button>
+<button class="flex flex-col items-center justify-center w-full h-full text-primary font-semibold border-t-2 border-primary pt-[2px] transition-colors focus:outline-none focus:ring-2 focus:ring-accent">
+<span class="material-symbols-outlined text-[24px]" style="font-variation-settings: 'FILL' 1;">inventory_2</span>
+<span class="font-label-eyebrow text-[10px] mt-1 tracking-normal">Productos</span>
+</button>
+<button class="flex flex-col items-center justify-center w-full h-full text-secondary hover:text-primary transition-colors focus:outline-none focus:ring-2 focus:ring-accent">
+<span class="material-symbols-outlined text-[24px]">shopping_cart</span>
+<span class="font-label-eyebrow text-[10px] mt-1 tracking-normal">Pedidos</span>
+</button>
+<button class="flex flex-col items-center justify-center w-full h-full text-secondary hover:text-primary transition-colors focus:outline-none focus:ring-2 focus:ring-accent">
+<span class="material-symbols-outlined text-[24px]">person</span>
+<span class="font-label-eyebrow text-[10px] mt-1 tracking-normal">Perfil</span>
+</button>
+</nav>
+<!-- Spacer for fixed bottom nav -->
+<div class="h-16 md:hidden"></div>
+</body></html>

@@ -1,0 +1,128 @@
+name: peaku
+
+services:
+  # ---------------------------------------------------------------------------
+  # MongoDB instances (database per service)
+  # ---------------------------------------------------------------------------
+  mongo-auth:
+    image: mongo:7
+    container_name: peaku-mongo-auth
+    restart: unless-stopped
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_AUTH_USER}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_AUTH_PASSWORD}
+      MONGO_INITDB_DATABASE: ${MONGO_AUTH_DB}
+    volumes:
+      - mongo-auth-data:/data/db
+    networks:
+      - peaku-net
+    # Bind a loopback (127.0.0.1) — accesible desde la host machine para
+    # correr el seed script, pero NO desde otras máquinas de la red.
+    # En producción real remover esta sección (Mongos quedan solo en la red interna).
+    ports:
+      - '127.0.0.1:27017:27017'
+    healthcheck:
+      test: ['CMD', 'mongosh', '--quiet', '--eval', 'db.adminCommand("ping").ok']
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  mongo-products:
+    image: mongo:7
+    container_name: peaku-mongo-products
+    restart: unless-stopped
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_PRODUCTS_USER}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_PRODUCTS_PASSWORD}
+      MONGO_INITDB_DATABASE: ${MONGO_PRODUCTS_DB}
+    volumes:
+      - mongo-products-data:/data/db
+    networks:
+      - peaku-net
+    # Bind a loopback (127.0.0.1) — ver mongo-auth para detalle.
+    ports:
+      - '127.0.0.1:27018:27017'
+    healthcheck:
+      test: ['CMD', 'mongosh', '--quiet', '--eval', 'db.adminCommand("ping").ok']
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # ---------------------------------------------------------------------------
+  # Microservices (descomentar a medida que se implementen)
+  # ---------------------------------------------------------------------------
+  auth-service:
+    build:
+      context: .
+      dockerfile: apps/auth-service/Dockerfile
+    container_name: peaku-auth-service
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      MONGO_URI: ${MONGO_AUTH_URI}
+      PORT: ${AUTH_PORT}
+    depends_on:
+      mongo-auth:
+        condition: service_healthy
+    networks:
+      - peaku-net
+    # Solo se expone en dev/local para poder ver Swagger directo
+    ports:
+      - '${AUTH_PORT}:${AUTH_PORT}'
+
+  products-service:
+    build:
+      context: .
+      dockerfile: apps/products-service/Dockerfile
+    container_name: peaku-products-service
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      MONGO_URI: ${MONGO_PRODUCTS_URI}
+      PORT: ${PRODUCTS_PORT}
+    depends_on:
+      mongo-products:
+        condition: service_healthy
+    networks:
+      - peaku-net
+    ports:
+      - '${PRODUCTS_PORT}:${PRODUCTS_PORT}'
+
+  api-gateway:
+    build:
+      context: .
+      dockerfile: apps/api-gateway/Dockerfile
+    container_name: peaku-api-gateway
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      PORT: ${GATEWAY_PORT}
+    depends_on:
+      - auth-service
+      - products-service
+    networks:
+      - peaku-net
+    ports:
+      - '${GATEWAY_PORT}:${GATEWAY_PORT}'
+
+  # Frontend (se agrega en su etapa propia)
+  # frontend:
+  #   build:
+  #     context: ./apps/frontend
+  #     dockerfile: Dockerfile
+  #   container_name: peaku-frontend
+  #   restart: unless-stopped
+  #   depends_on:
+  #     - api-gateway
+  #   networks:
+  #     - peaku-net
+  #   ports:
+  #     - '${FRONTEND_PORT}:80'
+
+networks:
+  peaku-net:
+    driver: bridge
+
+volumes:
+  mongo-auth-data:
+  mongo-products-data:

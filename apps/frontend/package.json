@@ -1,0 +1,37 @@
+{
+  "name": "@peaku/frontend",
+  "version": "0.1.0",
+  "private": true,
+  "description": "SPA Angular del e-commerce agropecuario PeaKu",
+  "scripts": {
+    "start": "ng serve --port 4200 --host 127.0.0.1",
+    "build": "ng build",
+    "watch": "ng build --watch --configuration development"
+  },
+  "dependencies": {
+    "@angular/animations": "~21.2.11",
+    "@angular/cdk": "~21.2.11",
+    "@angular/common": "~21.2.11",
+    "@angular/compiler": "~21.2.11",
+    "@angular/core": "~21.2.11",
+    "@angular/forms": "~21.2.11",
+    "@angular/material": "~21.2.11",
+    "@angular/platform-browser": "~21.2.11",
+    "@angular/router": "~21.2.11",
+    "@lucide/angular": "^1.16.0",
+    "@ngrx/signals": "^21.1.0",
+    "rxjs": "~7.8.2",
+    "tslib": "^2.3.0",
+    "zone.js": "~0.16.2"
+  },
+  "devDependencies": {
+    "@angular/build": "~21.2.11",
+    "@angular/cli": "~21.2.11",
+    "@angular/compiler-cli": "~21.2.11",
+    "@tailwindcss/container-queries": "^0.1.1",
+    "@tailwindcss/forms": "^0.5.10",
+    "autoprefixer": "^10.4.21",
+    "postcss": "^8.5.3",
+    "tailwindcss": "~3.4.19"
+  }
+}

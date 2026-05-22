@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+
+<html lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>PeaKu - Iniciar sesión</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700&amp;family=Inter:wght@400;500&amp;family=JetBrains+Mono:wght@500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "inverse-on-surface": "#eef2eb",
+                        "error": "#ba1a1a",
+                        "surface": "#f7faf3",
+                        "inverse-primary": "#8cd79b",
+                        "on-error": "#ffffff",
+                        "secondary-container": "#e1e0d8",
+                        "tertiary": "#772c3b",
+                        "surface-container-low": "#f1f5ed",
+                        "primary-fixed": "#a7f4b6",
+                        "on-tertiary": "#ffffff",
+                        "on-secondary-fixed-variant": "#474741",
+                        "surface-container": "#ebefe8",
+                        "primary-container": "#1f6b3a",
+                        "tertiary-container": "#954352",
+                        "on-secondary-fixed": "#1b1c17",
+                        "error-container": "#ffdad6",
+                        "border": "#D9D6CC",
+                        "outline": "#707a6f",
+                        "on-tertiary-fixed": "#3f0113",
+                        "on-surface-variant": "#404940",
+                        "surface-dim": "#d7dbd4",
+                        "secondary-fixed-dim": "#c8c7bf",
+                        "on-primary-container": "#9ce9ab",
+                        "surface-variant": "#e0e4dc",
+                        "surface-container-highest": "#e0e4dc",
+                        "secondary-fixed": "#e4e2db",
+                        "surface-container-lowest": "#ffffff",
+                        "on-tertiary-container": "#ffcad0",
+                        "on-primary-fixed-variant": "#005226",
+                        "secondary": "#5f5f59",
+                        "on-secondary-container": "#63635d",
+                        "outline-variant": "#bfc9bd",
+                        "surface-container-high": "#e6e9e2",
+                        "on-primary-fixed": "#00210c",
+                        "on-tertiary-fixed-variant": "#792d3c",
+                        "on-secondary": "#ffffff",
+                        "card": "#FFFFFF",
+                        "background": "#FAFAF7",
+                        "muted-foreground": "#5C6358",
+                        "on-background": "#181d18",
+                        "accent": "#E8A33D",
+                        "primary": "#005226",
+                        "destructive": "#A33A2A",
+                        "surface-bright": "#f7faf3",
+                        "primary-fixed-dim": "#8cd79b",
+                        "foreground": "#1A1F1B",
+                        "on-primary": "#ffffff",
+                        "on-surface": "#181d18",
+                        "tertiary-fixed": "#ffd9dd",
+                        "inverse-surface": "#2d322d",
+                        "surface-tint": "#206c3b",
+                        "on-error-container": "#93000a",
+                        "tertiary-fixed-dim": "#ffb2bc"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "reading-column": "680px",
+                        "gap-default": "24px",
+                        "section-py-mobile": "48px",
+                        "container-max": "1280px",
+                        "section-py-desktop": "80px",
+                        "form-column": "480px"
+                    },
+                    "fontFamily": {
+                        "display-xl": ["Manrope", "sans-serif"],
+                        "body-sm": ["Inter", "sans-serif"],
+                        "display-md": ["Manrope", "sans-serif"],
+                        "h2": ["Manrope", "sans-serif"],
+                        "display-lg": ["Manrope", "sans-serif"],
+                        "body": ["Inter", "sans-serif"],
+                        "mono": ["JetBrains Mono", "monospace"],
+                        "label-eyebrow": ["Manrope", "sans-serif"],
+                        "h3": ["Manrope", "sans-serif"]
+                    },
+                    "fontSize": {
+                        "display-xl": ["56px", { "lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "body-sm": ["13px", { "lineHeight": "1.5", "fontWeight": "400" }],
+                        "display-md": ["28px", { "lineHeight": "1.2", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+                        "h2": ["22px", { "lineHeight": "1.3", "fontWeight": "600" }],
+                        "display-lg": ["40px", { "lineHeight": "1.15", "letterSpacing": "-0.015em", "fontWeight": "700" }],
+                        "body": ["15px", { "lineHeight": "1.6", "fontWeight": "400" }],
+                        "mono": ["13px", { "fontWeight": "500" }],
+                        "label-eyebrow": ["11px", { "lineHeight": "1.4", "letterSpacing": "0.14em", "fontWeight": "600" }],
+                        "h3": ["18px", { "lineHeight": "1.4", "fontWeight": "600" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+</head>
+<body class="bg-background text-foreground font-body antialiased min-h-screen flex flex-col items-center justify-center">
+<main class="w-full max-w-[375px] bg-background min-h-screen flex flex-col relative shadow-sm border-x border-border/50">
+<!-- Hero Section -->
+<section class="relative h-[220px] w-full overflow-hidden shrink-0">
+<div class="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent z-10 pointer-events-none"></div>
+<div class="absolute inset-0 bg-black/10 z-10 pointer-events-none"></div>
+<img alt="" class="absolute inset-0 w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida/ADBb0uhEo6cRUDrx0I6YPdRZ5rxCaWzXB8tnA5p9_MdU45bWWpiQbUPpWMnEQh-Yx7FZXYqZGQYk789Wp7NIpbv7T2imn7gc5kNJoGHGUAqd0lL2evTgdx3qB8-fSoazCg5zWNYeSboAyEHptgrzUth-iIGKX8PfE4GSqmoPwA6o6zgrIVv3q3OFky5UNich6LpmgwBQ5DpwxGg8PoHVD7G1p1DSSrcpYpVTORhXQvgEtHo3OTXSAwBqKWZu3G4"/>
+<div class="absolute top-6 left-6 z-20 flex items-baseline">
+<span class="font-display-md text-display-md text-surface-container-lowest drop-shadow-md">PeaKu</span>
+<span class="w-2 h-2 rounded-full bg-accent ml-1 mb-1 shadow-sm"></span>
+</div>
+</section>
+<!-- Form Section -->
+<section class="flex-1 px-6 py-8 flex flex-col bg-background relative z-20 -mt-4 rounded-t-[20px]">
+<div class="mb-8">
+<p class="font-label-eyebrow text-label-eyebrow text-muted-foreground uppercase tracking-widest mb-2">CUENTA INSTITUCIONAL</p>
+<h1 class="font-h2 text-h2 text-foreground mb-1">Iniciar sesión</h1>
+<p class="font-body-sm text-body-sm text-muted-foreground">Ingresá para gestionar tu catálogo.</p>
+</div>
+<form class="flex flex-col gap-5 flex-1">
+<div class="flex flex-col gap-1.5">
+<label class="font-body text-body font-medium text-foreground text-[15px]" for="email">Correo</label>
+<input class="h-11 w-full rounded-lg border border-border bg-card px-3 text-foreground placeholder:text-muted-foreground focus:border-accent focus:ring-1 focus:ring-accent outline-none transition-colors font-body-sm text-body-sm" id="email" placeholder="vos@empresa.com" required="" type="email"/>
+</div>
+<div class="flex flex-col gap-1.5">
+<div class="flex justify-between items-center">
+<label class="font-body text-body font-medium text-foreground text-[15px]" for="password">Contraseña</label>
+<a class="font-body-sm text-body-sm text-accent hover:text-accent/80 transition-colors" href="#">¿Olvidaste?</a>
+</div>
+<div class="relative">
+<input class="h-11 w-full rounded-lg border border-border bg-card px-3 pr-10 text-foreground placeholder:text-muted-foreground focus:border-accent focus:ring-1 focus:ring-accent outline-none transition-colors font-body-sm text-body-sm" id="password" placeholder="••••••••" required="" type="password"/>
+<button class="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors flex items-center justify-center" type="button">
+<span class="material-symbols-outlined text-[20px]">visibility_off</span>
+</button>
+</div>
+</div>
+<button class="w-full h-12 bg-primary text-on-primary font-body text-[15px] font-semibold rounded-lg hover:bg-primary/90 transition-colors mt-2 shadow-sm" type="submit">
+                    Iniciar sesión
+                </button>
+<div class="flex items-center gap-3 my-2">
+<div class="h-px bg-border flex-1"></div>
+<span class="font-body-sm text-body-sm text-muted-foreground">o</span>
+<div class="h-px bg-border flex-1"></div>
+</div>
+<button class="w-full h-11 border border-border bg-transparent text-foreground font-body-sm text-body-sm font-medium rounded-lg opacity-50 cursor-not-allowed flex items-center justify-center gap-2" type="button">
+<svg class="w-4 h-4" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"></path>
+<path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"></path>
+<path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"></path>
+<path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"></path>
+</svg>
+                    Continuar con Google
+                </button>
+</form>
+<div class="mt-8 flex flex-col items-center gap-6">
+<p class="font-body-sm text-body-sm text-muted-foreground">
+                    ¿No tenés cuenta? <a class="text-accent hover:text-accent/80 font-medium transition-colors" href="#">Crear cuenta</a>
+</p>
+<p class="font-body-sm text-[12px] text-muted-foreground text-center">
+                    © 2026 PeaKu
+                </p>
+</div>
+</section>
+</main>
+</body></html>

@@ -1,0 +1,60 @@
+# Dependencies
+node_modules/
+.pnpm-store/
+
+# Build outputs
+dist/
+build/
+*.tsbuildinfo
+.angular/cache/
+
+# Coverage
+coverage/
+.nyc_output/
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+pnpm-debug.log*
+yarn-debug.log*
+
+# Env / secrets
+.env
+.env.local
+.env.*.local
+*.pem
+*.key
+
+# IDE
+.idea/
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.example.json
+*.swp
+*.swo
+
+# Claude Code — settings personales con secrets / paths (NO versionar)
+.claude/settings.json
+.claude/settings.local.json
+.mcp.json
+.mcp.local.json
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Docker
+docker-compose.override.yml
+
+# Test outputs
+junit.xml
+test-results/
+e2e/screenshots/
+e2e/videos/
+
+# Misc
+*.tgz
+.tmp/
+.cache/

@@ -1,0 +1,27 @@
+// Material 3 custom theme alineado con apps/frontend/DESIGN.md
+// El verde campo (#1F6B3A) y ámbar cosecha (#E8A33D) son los pivotes.
+// Mientras vayamos agregando componentes Material (table/form/dialog),
+// los tokens se mapean desde acá. Stack: Material 21 + Tailwind 3 sharing tokens.
+
+@use '@angular/material' as mat;
+
+html {
+  // Define la paleta del proyecto.
+  @include mat.theme(
+    (
+      color: (
+        primary: mat.$green-palette,
+        tertiary: mat.$orange-palette,
+        theme-type: light,
+      ),
+      typography: (
+        plain-family: 'Inter, system-ui, sans-serif',
+        brand-family: 'Manrope, system-ui, sans-serif',
+        bold-weight: 700,
+        medium-weight: 600,
+        regular-weight: 400,
+      ),
+      density: 0,
+    )
+  );
+}

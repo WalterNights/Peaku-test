@@ -1,0 +1,22 @@
+# Normalize all text files to LF on commit; preserve OS line endings in working tree
+* text=auto eol=lf
+
+# Specific overrides
+*.{cmd,[cC][mM][dD]} text eol=crlf
+*.{bat,[bB][aA][tT]} text eol=crlf
+*.ps1 text eol=crlf
+
+# Binary
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+*.pdf binary
+*.woff binary
+*.woff2 binary
+*.ttf binary
+*.eot binary
+
+# pnpm lockfile — mark as binary for diff readability (still merges fine)
+pnpm-lock.yaml -diff linguist-generated=true

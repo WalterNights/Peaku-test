@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+
+<html class="light" lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>PeaKu - Iniciar Sesión</title>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700&amp;family=Inter:wght@400;500&amp;family=JetBrains+Mono:wght@500&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface": "#f7faf3",
+                        "background": "#FAFAF7",
+                        "tertiary-fixed-dim": "#ffb2bc",
+                        "tertiary-fixed": "#ffd9dd",
+                        "on-surface-variant": "#404940",
+                        "on-secondary-container": "#63635d",
+                        "secondary-fixed-dim": "#c8c7bf",
+                        "on-secondary-fixed": "#1b1c17",
+                        "on-background": "#181d18",
+                        "foreground": "#1A1F1B",
+                        "on-tertiary-container": "#ffcad0",
+                        "outline-variant": "#bfc9bd",
+                        "on-tertiary-fixed-variant": "#792d3c",
+                        "destructive": "#A33A2A",
+                        "on-primary-fixed": "#00210c",
+                        "primary-container": "#1f6b3a",
+                        "surface-dim": "#d7dbd4",
+                        "on-primary-fixed-variant": "#005226",
+                        "outline": "#707a6f",
+                        "tertiary-container": "#954352",
+                        "error": "#ba1a1a",
+                        "on-tertiary": "#ffffff",
+                        "on-error": "#ffffff",
+                        "accent": "#E8A33D",
+                        "primary-fixed": "#a7f4b6",
+                        "on-secondary": "#ffffff",
+                        "surface-container-lowest": "#ffffff",
+                        "border": "#D9D6CC",
+                        "secondary": "#5f5f59",
+                        "surface-container-low": "#f1f5ed",
+                        "secondary-container": "#e1e0d8",
+                        "on-error-container": "#93000a",
+                        "surface-variant": "#e0e4dc",
+                        "inverse-on-surface": "#eef2eb",
+                        "primary": "#005226",
+                        "card": "#FFFFFF",
+                        "tertiary": "#772c3b",
+                        "secondary-fixed": "#e4e2db",
+                        "surface-container-highest": "#e0e4dc",
+                        "surface-container": "#ebefe8",
+                        "surface-bright": "#f7faf3",
+                        "on-tertiary-fixed": "#3f0113",
+                        "surface-container-high": "#e6e9e2",
+                        "on-primary": "#ffffff",
+                        "inverse-primary": "#8cd79b",
+                        "surface-tint": "#206c3b",
+                        "on-secondary-fixed-variant": "#474741",
+                        "on-primary-container": "#9ce9ab",
+                        "on-surface": "#181d18",
+                        "error-container": "#ffdad6",
+                        "inverse-surface": "#2d322d",
+                        "primary-fixed-dim": "#8cd79b",
+                        "muted-foreground": "#5C6358"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "section-py-desktop": "80px",
+                        "gap-default": "24px",
+                        "section-py-mobile": "48px",
+                        "form-column": "480px",
+                        "container-max": "1280px",
+                        "reading-column": "680px"
+                    },
+                    "fontFamily": {
+                        "h2": ["Manrope"],
+                        "display-xl": ["Manrope"],
+                        "body-sm": ["Inter"],
+                        "h3": ["Manrope"],
+                        "display-lg": ["Manrope"],
+                        "mono": ["JetBrains Mono"],
+                        "display-md": ["Manrope"],
+                        "label-eyebrow": ["Manrope"],
+                        "body": ["Inter"]
+                    },
+                    "fontSize": {
+                        "h2": ["22px", { "lineHeight": "1.3", "fontWeight": "600" }],
+                        "display-xl": ["56px", { "lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "body-sm": ["13px", { "lineHeight": "1.5", "fontWeight": "400" }],
+                        "h3": ["18px", { "lineHeight": "1.4", "fontWeight": "600" }],
+                        "display-lg": ["40px", { "lineHeight": "1.15", "letterSpacing": "-0.015em", "fontWeight": "700" }],
+                        "mono": ["13px", { "fontWeight": "500" }],
+                        "display-md": ["28px", { "lineHeight": "1.2", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+                        "label-eyebrow": ["11px", { "lineHeight": "1.4", "letterSpacing": "0.14em", "fontWeight": "600" }],
+                        "body": ["15px", { "lineHeight": "1.6", "fontWeight": "400" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .material-symbols-outlined.filled {
+            font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+</head>
+<body class="bg-background text-foreground font-body antialiased min-h-screen flex flex-col md:flex-row">
+<!-- Left Column (60%) -->
+<div class="w-full md:w-[60%] min-h-screen flex flex-col justify-between p-6 md:p-8 lg:p-12 relative z-10">
+<!-- Header -->
+<header class="w-full flex items-center">
+<h1 class="font-h2 text-h2 flex items-baseline gap-1 text-primary">
+                PeaKu
+                <span class="w-2 h-2 rounded-full bg-accent inline-block"></span>
+</h1>
+</header>
+<!-- Centered Content -->
+<main class="w-full max-w-form-column mx-auto flex-grow flex flex-col justify-center py-12">
+<div class="space-y-6">
+<!-- Headings -->
+<div class="space-y-2">
+<span class="font-label-eyebrow text-label-eyebrow uppercase tracking-widest text-muted-foreground block">
+                        CUENTA INSTITUCIONAL
+                    </span>
+<h2 class="font-display-md text-display-md text-foreground">
+                        Iniciar sesión
+                    </h2>
+<p class="font-body text-body text-muted-foreground">
+                        Ingresá a tu cuenta para gestionar tu catálogo y operaciones.
+                    </p>
+</div>
+<!-- Form -->
+<form class="space-y-5" onsubmit="event.preventDefault();">
+<div class="space-y-1.5">
+<label class="font-body-sm text-body-sm font-medium text-foreground block" for="email">
+                            Correo electrónico
+                        </label>
+<input class="w-full h-10 px-3 py-2 rounded font-body-sm text-body-sm border border-border bg-card text-foreground placeholder:text-secondary-fixed-dim focus:outline-none focus:ring-2 focus:ring-accent/20 focus:border-accent transition-colors" id="email" placeholder="vos@empresa.com" type="email"/>
+</div>
+<div class="space-y-1.5">
+<div class="flex justify-between items-center">
+<label class="font-body-sm text-body-sm font-medium text-foreground block" for="password">
+                                Contraseña
+                            </label>
+<a class="font-body-sm text-body-sm text-accent hover:text-accent/80 hover:underline underline-offset-4 transition-colors" href="#">
+                                ¿Olvidaste tu contraseña?
+                            </a>
+</div>
+<div class="relative">
+<input class="w-full h-10 px-3 py-2 rounded font-body-sm text-body-sm border border-border bg-card text-foreground placeholder:text-secondary-fixed-dim focus:outline-none focus:ring-2 focus:ring-accent/20 focus:border-accent transition-colors pr-10" id="password" placeholder="••••••••" type="password"/>
+<button class="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors focus:outline-none" type="button">
+<span aria-hidden="true" class="material-symbols-outlined text-[20px]">visibility</span>
+</button>
+</div>
+</div>
+<button class="w-full h-12 rounded-lg bg-primary-container text-on-primary font-body text-body font-semibold hover:bg-primary-container/90 focus:outline-none focus:ring-2 focus:ring-primary-container focus:ring-offset-2 focus:ring-offset-background transition-all" type="submit">
+                        Iniciar sesión
+                    </button>
+</form>
+<!-- Separator -->
+<div class="relative flex items-center py-2">
+<div class="flex-grow border-t border-border"></div>
+<span class="flex-shrink-0 mx-4 font-body-sm text-body-sm text-muted-foreground">o</span>
+<div class="flex-grow border-t border-border"></div>
+</div>
+<!-- Google Button -->
+<button class="w-full h-12 rounded-lg border border-border bg-transparent text-foreground font-body text-body font-medium hover:bg-surface-container-low focus:outline-none focus:ring-2 focus:ring-border focus:ring-offset-2 focus:ring-offset-background transition-all flex items-center justify-center gap-3" type="button">
+<svg class="w-5 h-5" fill="none" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"></path>
+<path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"></path>
+<path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"></path>
+<path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"></path>
+</svg>
+                    Continuar con Google
+                </button>
+<!-- Footer Link -->
+<div class="text-center pt-4">
+<span class="font-body-sm text-body-sm text-muted-foreground">
+                        ¿No tenés cuenta? 
+                        <a class="text-accent font-medium hover:text-accent/80 hover:underline underline-offset-4 transition-colors" href="#">
+                            Crear cuenta
+                        </a>
+</span>
+</div>
+</div>
+</main>
+<!-- Small Footer -->
+<footer class="w-full flex items-center justify-start mt-auto pt-6">
+<span class="font-body-sm text-body-sm text-muted-foreground">
+                © 2026 PeaKu
+            </span>
+</footer>
+</div>
+<!-- Right Column (40%) -->
+<div class="hidden md:block md:w-[40%] relative min-h-screen">
+<!-- Background Image -->
+<div class="absolute inset-0 bg-cover bg-center bg-no-repeat" style="background-image: url('../assets/login-field.jpg');">
+</div>
+<!-- Gradient Overlay -->
+<div class="absolute inset-0 bg-gradient-to-r from-background via-background/20 to-transparent"></div>
+<!-- Caption -->
+<div class="absolute bottom-12 left-12 right-12 z-10">
+<p class="font-body-sm text-body-sm text-background drop-shadow-md max-w-sm">
+                Plataforma de comercio agropecuario · Productos certificados, lotes trazables.
+            </p>
+</div>
+</div>
+</body></html>

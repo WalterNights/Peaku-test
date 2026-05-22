@@ -1,0 +1,17 @@
+{
+  "title": "PeaKu - Crear cuenta",
+  "projectId": "7310815548639251933",
+  "screenId": "047f0a26689140e6b5ff52bdbb043b39",
+  "resourceName": "projects/7310815548639251933/screens/047f0a26689140e6b5ff52bdbb043b39",
+  "deviceType": "DESKTOP",
+  "width": 2560,
+  "height": 2286,
+  "designSystem": "assets/596430d1ddac4333b077314c930e4fe3",
+  "files": {
+    "html": "screen.html",
+    "preview": "preview.png",
+    "assets": ["../assets/register-hands.jpg"]
+  },
+  "generatedAt": "2026-05-21",
+  "notes": "Split 60/40 visualmente coherente con Login (mismo wordmark, eyebrow style, paleta, tipografías). Form: Nombre + Apellido (grid 2 cols), Email institucional, Contraseña con indicador de fuerza (4 barras), Confirmar contraseña, Checkbox términos. CTAs: 'Crear cuenta' (primary) + 'Continuar con Google' (outline). Imagen lateral: close-up de manos sosteniendo granos dorados (distinta del login). El HTML referenciaba la imagen vía CDN aida-public; reemplazada por ../assets/register-hands.jpg para que el export sea auto-contenido."
+}

@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+
+<html class="light" lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Crear cuenta - PeaKu</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&amp;family=Manrope:wght@600;700&amp;family=JetBrains+Mono:wght@500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "secondary-container": "#e1e0d8",
+                        "tertiary-fixed": "#ffd9dd",
+                        "error-container": "#ffdad6",
+                        "on-secondary-container": "#63635d",
+                        "tertiary-container": "#954352",
+                        "on-secondary": "#ffffff",
+                        "surface-bright": "#f7faf3",
+                        "surface-container-highest": "#e0e4dc",
+                        "primary-container": "#1f6b3a",
+                        "on-error-container": "#93000a",
+                        "error": "#ba1a1a",
+                        "primary-fixed": "#a7f4b6",
+                        "surface-variant": "#e0e4dc",
+                        "tertiary-fixed-dim": "#ffb2bc",
+                        "surface-container-lowest": "#ffffff",
+                        "destructive": "#A33A2A",
+                        "on-primary-container": "#9ce9ab",
+                        "surface": "#f7faf3",
+                        "primary": "#005226",
+                        "on-tertiary": "#ffffff",
+                        "surface-container": "#ebefe8",
+                        "on-secondary-fixed-variant": "#474741",
+                        "inverse-primary": "#8cd79b",
+                        "tertiary": "#772c3b",
+                        "secondary-fixed": "#e4e2db",
+                        "outline-variant": "#bfc9bd",
+                        "on-tertiary-container": "#ffcad0",
+                        "on-secondary-fixed": "#1b1c17",
+                        "border": "#D9D6CC",
+                        "muted-foreground": "#5C6358",
+                        "surface-container-high": "#e6e9e2",
+                        "on-tertiary-fixed-variant": "#792d3c",
+                        "surface-tint": "#206c3b",
+                        "on-primary-fixed": "#00210c",
+                        "on-surface-variant": "#404940",
+                        "on-primary": "#ffffff",
+                        "inverse-on-surface": "#eef2eb",
+                        "on-tertiary-fixed": "#3f0113",
+                        "surface-dim": "#d7dbd4",
+                        "on-background": "#181d18",
+                        "accent": "#E8A33D",
+                        "background": "#FAFAF7",
+                        "on-primary-fixed-variant": "#005226",
+                        "on-error": "#ffffff",
+                        "primary-fixed-dim": "#8cd79b",
+                        "secondary-fixed-dim": "#c8c7bf",
+                        "card": "#FFFFFF",
+                        "surface-container-low": "#f1f5ed",
+                        "secondary": "#5f5f59",
+                        "outline": "#707a6f",
+                        "on-surface": "#181d18",
+                        "inverse-surface": "#2d322d",
+                        "foreground": "#1A1F1B"
+                    },
+                    borderRadius: {
+                        DEFAULT: "0.25rem",
+                        lg: "0.5rem",
+                        xl: "0.75rem",
+                        full: "9999px"
+                    },
+                    spacing: {
+                        "container-max": "1280px",
+                        "gap-default": "24px",
+                        "reading-column": "680px",
+                        "form-column": "480px",
+                        "section-py-mobile": "48px",
+                        "section-py-desktop": "80px"
+                    },
+                    fontFamily: {
+                        "display-lg": ["Manrope"],
+                        "body-sm": ["Inter"],
+                        "body": ["Inter"],
+                        "display-xl": ["Manrope"],
+                        "display-md": ["Manrope"],
+                        "label-eyebrow": ["Manrope"],
+                        "h2": ["Manrope"],
+                        "h3": ["Manrope"],
+                        "mono": ["JetBrains Mono"]
+                    },
+                    fontSize: {
+                        "display-lg": ["40px", { lineHeight: "1.15", letterSpacing: "-0.015em", fontWeight: "700" }],
+                        "body-sm": ["13px", { lineHeight: "1.5", fontWeight: "400" }],
+                        "body": ["15px", { lineHeight: "1.6", fontWeight: "400" }],
+                        "display-xl": ["56px", { lineHeight: "1.1", letterSpacing: "-0.02em", fontWeight: "700" }],
+                        "display-md": ["28px", { lineHeight: "1.2", letterSpacing: "-0.01em", fontWeight: "600" }],
+                        "label-eyebrow": ["11px", { lineHeight: "1.4", letterSpacing: "0.14em", fontWeight: "600" }],
+                        "h2": ["22px", { lineHeight: "1.3", fontWeight: "600" }],
+                        "h3": ["18px", { lineHeight: "1.4", fontWeight: "600" }],
+                        "mono": ["13px", { fontWeight: "500" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+</head>
+<body class="bg-background text-foreground font-body antialiased min-h-screen flex flex-col md:flex-row">
+<!-- LEFT COLUMN -->
+<div class="w-full md:w-[60%] flex flex-col justify-between p-6 md:p-12 lg:px-24 bg-background relative z-10">
+<!-- Header -->
+<header class="flex items-center">
+<span class="font-h3 text-h3 text-primary tracking-tight">PeaKu</span>
+<span class="w-1.5 h-1.5 rounded-full bg-accent ml-1.5"></span>
+</header>
+<!-- Main Content -->
+<main class="w-full max-w-form-column mx-auto my-auto py-12">
+<div class="mb-8">
+<span class="font-label-eyebrow text-label-eyebrow text-muted-foreground uppercase tracking-widest block mb-2">NUEVA CUENTA</span>
+<h1 class="font-display-md text-display-md text-foreground mb-2">Crear cuenta</h1>
+<p class="font-body text-body text-muted-foreground">Sumate a la red de productores y compradores agropecuarios.</p>
+</div>
+<form class="space-y-6">
+<!-- Name Grid -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+<div class="space-y-1.5">
+<label class="block font-body text-body text-foreground" for="firstName">Nombre</label>
+<input class="w-full h-10 px-3 py-2 rounded-lg border border-border bg-card text-foreground font-body focus:outline-none focus:ring-1 focus:ring-accent focus:border-accent transition-colors" id="firstName" placeholder="María" type="text"/>
+</div>
+<div class="space-y-1.5">
+<label class="block font-body text-body text-foreground" for="lastName">Apellido</label>
+<input class="w-full h-10 px-3 py-2 rounded-lg border border-border bg-card text-foreground font-body focus:outline-none focus:ring-1 focus:ring-accent focus:border-accent transition-colors" id="lastName" placeholder="Rodríguez" type="text"/>
+</div>
+</div>
+<!-- Email -->
+<div class="space-y-1.5">
+<label class="block font-body text-body text-foreground" for="email">Correo institucional</label>
+<input class="w-full h-10 px-3 py-2 rounded-lg border border-border bg-card text-foreground font-body focus:outline-none focus:ring-1 focus:ring-accent focus:border-accent transition-colors" id="email" placeholder="vos@empresa.com" type="email"/>
+<p class="font-body-sm text-body-sm text-muted-foreground mt-1">Lo usarás para iniciar sesión.</p>
+</div>
+<!-- Password -->
+<div class="space-y-1.5">
+<label class="block font-body text-body text-foreground" for="password">Contraseña</label>
+<div class="relative">
+<input class="w-full h-10 pl-3 pr-10 py-2 rounded-lg border border-border bg-card text-foreground font-body focus:outline-none focus:ring-1 focus:ring-accent focus:border-accent transition-colors" id="password" type="password"/>
+<button class="absolute inset-y-0 right-0 px-3 flex items-center text-muted-foreground hover:text-foreground transition-colors" type="button">
+<span class="material-symbols-outlined text-[20px]" data-icon="visibility">visibility</span>
+</button>
+</div>
+<div class="flex items-center justify-between mt-2">
+<div class="flex gap-1 w-full max-w-[120px]">
+<div class="h-1 flex-1 rounded-full bg-primary-container"></div>
+<div class="h-1 flex-1 rounded-full bg-primary-container"></div>
+<div class="h-1 flex-1 rounded-full bg-primary-container"></div>
+<div class="h-1 flex-1 rounded-full bg-[#EFEDE5]"></div>
+</div>
+<span class="font-body-sm text-body-sm text-muted-foreground ml-2">Buena</span>
+</div>
+</div>
+<!-- Confirm Password -->
+<div class="space-y-1.5">
+<label class="block font-body text-body text-foreground" for="confirmPassword">Confirmar contraseña</label>
+<div class="relative">
+<input class="w-full h-10 pl-3 pr-10 py-2 rounded-lg border border-border bg-card text-foreground font-body focus:outline-none focus:ring-1 focus:ring-accent focus:border-accent transition-colors" id="confirmPassword" type="password"/>
+<button class="absolute inset-y-0 right-0 px-3 flex items-center text-muted-foreground hover:text-foreground transition-colors" type="button">
+<span class="material-symbols-outlined text-[20px]" data-icon="visibility">visibility</span>
+</button>
+</div>
+<p class="font-body-sm text-body-sm text-muted-foreground mt-1">Repetí tu contraseña.</p>
+</div>
+<!-- Terms Checkbox -->
+<div class="flex items-start gap-3 pt-2">
+<div class="flex items-center h-5">
+<input class="h-4 w-4 rounded-[6px] border-border text-primary-container focus:ring-accent bg-card" id="terms" type="checkbox"/>
+</div>
+<label class="font-body text-body text-foreground" for="terms">
+                        Acepto los <a class="text-accent hover:underline underline-offset-4" href="#">términos y condiciones</a> y la <a class="text-accent hover:underline underline-offset-4" href="#">política de privacidad</a>
+</label>
+</div>
+<!-- Primary Button -->
+<button class="w-full h-12 rounded-lg bg-primary-container text-background font-body font-semibold hover:bg-primary transition-colors flex items-center justify-center pt-6 mt-4" type="submit">
+                    Crear cuenta
+                </button>
+<!-- Divider -->
+<div class="relative flex items-center py-2">
+<div class="flex-grow border-t border-border"></div>
+<span class="flex-shrink-0 mx-4 text-muted-foreground font-body-sm text-body-sm">o</span>
+<div class="flex-grow border-t border-border"></div>
+</div>
+<!-- Outline Button -->
+<button class="w-full h-12 rounded-lg border border-border bg-transparent text-foreground font-body font-semibold hover:bg-surface-container transition-colors flex items-center justify-center gap-2" type="button">
+<svg class="w-5 h-5" fill="none" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"></path>
+<path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"></path>
+<path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"></path>
+<path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"></path>
+</svg>
+                    Continuar con Google
+                </button>
+<!-- Footer Link -->
+<div class="text-center pt-4">
+<a class="font-body text-body text-accent hover:underline underline-offset-4" href="#">¿Ya tenés cuenta? Iniciar sesión</a>
+</div>
+</form>
+</main>
+<!-- Footer -->
+<footer class="mt-8">
+<p class="font-body-sm text-body-sm text-muted-foreground">© 2026 PeaKu</p>
+</footer>
+</div>
+<!-- RIGHT COLUMN -->
+<div class="hidden md:block md:w-[40%] relative bg-surface-container-high overflow-hidden">
+<div class="absolute inset-0 bg-gradient-to-r from-background via-transparent to-transparent z-10 w-32"></div>
+<img alt="" class="absolute inset-0 w-full h-full object-cover z-0" src="../assets/register-hands.jpg"/>
+<div class="absolute bottom-12 left-12 right-12 z-20">
+<p class="font-body text-body text-background drop-shadow-md max-w-sm">
+                Sumate a la red de productores · Trazabilidad de lote a lote, contratos forward, logística refrigerada.
+            </p>
+</div>
+</div>
+</body></html>

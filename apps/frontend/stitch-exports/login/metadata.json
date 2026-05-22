@@ -1,0 +1,17 @@
+{
+  "title": "PeaKu - Login Screen",
+  "projectId": "7310815548639251933",
+  "screenId": "9dc104030b7d4c77a066be10c7bc3d93",
+  "resourceName": "projects/7310815548639251933/screens/9dc104030b7d4c77a066be10c7bc3d93",
+  "deviceType": "DESKTOP",
+  "width": 2560,
+  "height": 2048,
+  "designSystem": "assets/596430d1ddac4333b077314c930e4fe3",
+  "files": {
+    "html": "screen.html",
+    "preview": "preview.png",
+    "assets": ["../assets/login-field.jpg"]
+  },
+  "generatedAt": "2026-05-21",
+  "notes": "El HTML referenciaba originalmente la imagen vía CDN lh3.googleusercontent.com/aida-public/... La URL fue reemplazada por ../assets/login-field.jpg para que el export sea auto-contenido. La imagen original está preservada en assets/login-field.jpg sin modificaciones."
+}

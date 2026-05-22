@@ -1,0 +1,71 @@
+{
+  "name": "peaku-prueba",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Prueba técnica Full Stack — microservicios NestJS + Angular",
+  "packageManager": "pnpm@11.1.3",
+  "engines": {
+    "node": ">=22.22.0",
+    "pnpm": ">=11.1.0"
+  },
+  "scripts": {
+    "build": "pnpm --filter \"./libs/**\" run build && pnpm -r --filter \"./apps/**\" run build",
+    "build:libs": "pnpm --filter \"./libs/**\" run build",
+    "build:apps": "pnpm -r --filter \"./apps/**\" run build",
+    "lint": "pnpm -r run lint",
+    "format": "prettier --write \"**/*.{ts,js,json,md}\" --ignore-path .gitignore",
+    "format:check": "prettier --check \"**/*.{ts,js,json,md}\" --ignore-path .gitignore",
+    "test": "pnpm -r --filter=\"./apps/**\" run test",
+    "test:cov": "pnpm -r --filter=\"./apps/**\" run test:cov",
+    "dev:prebuild": "pnpm --filter @peaku/shared run build && pnpm --filter @peaku/auth-service run build && pnpm --filter @peaku/products-service run build && pnpm --filter @peaku/api-gateway run build",
+    "dev:cleanports": "node scripts/kill-stack.cjs",
+    "dev": "pnpm dev:cleanports && pnpm dev:prebuild && concurrently -k -i --restart-tries 0 -n MONGO,AUTH,PROD,GW,FRONT -c blue,green,yellow,magenta,cyan \"pnpm dev:db\" \"pnpm dev:auth\" \"pnpm dev:products\" \"pnpm dev:gateway\" \"pnpm dev:frontend\"",
+    "dev:backend": "pnpm dev:cleanports && pnpm dev:prebuild && concurrently -k -i --restart-tries 0 -n MONGO,AUTH,PROD,GW -c blue,green,yellow,magenta \"pnpm dev:db\" \"pnpm dev:auth\" \"pnpm dev:products\" \"pnpm dev:gateway\"",
+    "dev:db": "docker compose up mongo-auth mongo-products",
+    "dev:auth": "wait-on tcp:127.0.0.1:27017 -t 60000 && node --env-file=.env scripts/dev-service.cjs auth",
+    "dev:products": "wait-on tcp:127.0.0.1:27018 -t 60000 && node --env-file=.env scripts/dev-service.cjs products",
+    "dev:gateway": "wait-on tcp:127.0.0.1:3001 tcp:127.0.0.1:3002 -t 60000 && node --env-file=.env scripts/dev-service.cjs gateway",
+    "dev:frontend": "wait-on http://127.0.0.1:4050/health -t 60000 && pnpm --filter @peaku/frontend start",
+    "kill": "node scripts/kill-stack.cjs",
+    "docker:up": "docker compose up -d --build",
+    "docker:down": "docker compose down",
+    "docker:reset": "docker compose down -v && docker compose up -d --build && pnpm seed",
+    "docker:logs": "docker compose logs -f",
+    "audit:prod": "pnpm audit --prod --audit-level=high",
+    "audit:signatures": "pnpm audit signatures",
+    "audit:full": "pnpm audit --prod --audit-level=high && pnpm audit signatures",
+    "seed:auth": "pnpm --filter @peaku/auth-service seed",
+    "seed:products": "pnpm --filter @peaku/products-service seed",
+    "seed": "pnpm seed:auth && pnpm seed:products",
+    "prepare": "husky"
+  },
+  "devDependencies": {
+    "@commitlint/cli": "^19.6.0",
+    "@commitlint/config-conventional": "^19.6.0",
+    "@eslint/js": "^9.17.0",
+    "@types/node": "^22.10.0",
+    "@typescript-eslint/eslint-plugin": "^8.18.0",
+    "@typescript-eslint/parser": "^8.18.0",
+    "concurrently": "9.2.1",
+    "eslint": "^9.17.0",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-import": "^2.31.0",
+    "eslint-plugin-security": "^3.0.1",
+    "globals": "^15.13.0",
+    "husky": "^9.1.7",
+    "lint-staged": "^15.2.10",
+    "prettier": "^3.4.2",
+    "typescript": "~5.9.3",
+    "typescript-eslint": "^8.18.0",
+    "wait-on": "9.0.10"
+  },
+  "lint-staged": {
+    "*.{ts,js}": [
+      "prettier --write",
+      "eslint --fix"
+    ],
+    "*.{json,md,yml,yaml}": [
+      "prettier --write"
+    ]
+  }
+}

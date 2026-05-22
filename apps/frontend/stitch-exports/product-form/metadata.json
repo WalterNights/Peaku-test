@@ -1,0 +1,17 @@
+{
+  "title": "PeaKu - Editar Producto",
+  "projectId": "7310815548639251933",
+  "screenId": "c604e5345b92436497a44bb4d3d71717",
+  "resourceName": "projects/7310815548639251933/screens/c604e5345b92436497a44bb4d3d71717",
+  "deviceType": "DESKTOP",
+  "width": 2560,
+  "height": 2688,
+  "designSystem": "assets/596430d1ddac4333b077314c930e4fe3",
+  "files": {
+    "html": "screen.html",
+    "preview": "preview.png",
+    "assets": []
+  },
+  "generatedAt": "2026-05-21",
+  "notes": "Modo editar de producto existente (Semilla de Soja RR2). Split 3:1 con form principal + sidebar de estado/trazabilidad/imagen. Sticky footer con Cancelar / Guardar cambios / Eliminar."
+}
